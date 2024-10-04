@@ -97,3 +97,44 @@ class Solution(object):
 ### Conclusion
 
 This approach systematically narrows down the search space for valid bases $k$ and exponent $m$ based on mathematical insights derived from geometric series properties. The complexity is efficient due to logarithmic bounds on $m$, making it feasible for large values of $n$.
+
+
+## Why the maximum value of 𝑚 can be set to ⌊ log2(𝑛)⌋ ?
+
+The decision to set the maximum value of $m$ to $\lfloor \log_2(n) \rfloor$ comes from understanding the relationship between $n$, $k$, and $m$ in the context of the geometric series representation of $n$.
+
+### Reasoning Behind the Bound on $m$
+
+1. **Geometric Series Representation**:
+   We know that $n$ can be expressed as:
+
+   $$n = k^m + k^{m-1} + ... + k + 1$$
+
+   This means that $n$ is the sum of a geometric series. The value of this series grows exponentially with increasing $m$.
+
+2. **Minimum Value of $k$**:
+   The smallest base $k$ we consider is $2$. Therefore, for $k = 2$:
+
+   $$n \approx 2^m \quad \text{(for large } m\text{)}$$
+
+   This indicates that as $m$ increases, $n$ must also increase exponentially.
+
+3. **Finding Maximum $m$**:
+   To find the maximum $m$ that satisfies this relation with $k = 2$:
+
+   $$n \geq 2^m$$
+
+   Taking the logarithm base 2 of both sides gives:
+
+   $$m \leq \log_2(n)$$
+
+   Thus, the maximum integer value of $m$ that still allows the equation $n = k^m + k^{m-1} + ... + k + 1$ to hold is:
+
+   $$m_{\text{max}} = \lfloor \log_2(n) \rfloor$$
+
+### Summary
+
+- The maximum value of $m$ is derived from the fact that if $m$ were larger than $\lfloor \log_2(n) \rfloor$, the expression $k^m$ (with $k$ being at least 2) would exceed $n$, making it impossible for the equation to hold.
+- This logarithmic relationship helps limit the range of $m$ we need to check, allowing for an efficient solution to the problem. 
+
+This reasoning ensures that we are only considering feasible values for $m$ that can realistically correspond to valid bases $k$ such that $n$ can be expressed in the required form.

@@ -1,5 +1,91 @@
 # [Smallest Good Base](https://leetcode.com/problems/smallest-good-base/description/)
 
+## Using Binary Search
+
+To employ binary search for the "Smallest Good Base" problem, you can focus on finding the base $k$ for a fixed $m$. Here's a structured approach to how you can do this.
+
+### Outline of the Approach
+
+1. **Fix $m$**: Iterate over possible values of $m$ from $2$ to $\lfloor \log_2(n) \rfloor$.
+
+2. **Binary Search for $k$**:
+   - For each fixed $m$, perform a binary search on $k$ to find the smallest base that satisfies the equation:
+
+   $$n = \frac{k^{m+1} - 1}{k - 1}$$
+
+   This can be rearranged to:
+
+   $$n(k - 1) = k^{m+1} - 1$$
+
+   Which leads to:
+
+   $$k^{m+1} - nk + n - 1 = 0$$
+
+   This is a polynomial equation in $k$.
+
+3. **Set Up Binary Search**:
+   - The search range for $k$ will be from $2$ to $n$.
+   - For each candidate $k$, compute the left side of the equation and check if it equals $n$.
+
+### Implementation
+
+Here’s how the code would look with binary search incorporated:
+
+```python
+import math
+
+class Solution:
+    def smallestGoodBase(self, n: str) -> str:
+        n = int(n)
+        max_m = int(math.log(n, 2))  # Maximum possible value for m
+
+        for m in range(max_m, 1, -1):
+            # Binary search for k
+            left, right = 2, n
+            
+            while left <= right:
+                k = (left + right) // 2
+                # Calculate the left side of the equation
+                left_side = (k**(m + 1) - 1) // (k - 1)
+                
+                if left_side == n:
+                    return str(k)
+                elif left_side < n:
+                    right = k - 1  # Decrease k
+                else:
+                    left = k + 1   # Increase k
+
+        return str(n - 1)  # If no valid base found, return n-1
+```
+
+### Explanation of the Code
+
+1. **Maximum $m$**: We start by calculating the maximum value of $m$ as before.
+
+2. **Loop Over $m$**: For each value of $m$ from $\lfloor \log_2(n) \rfloor$ down to $2$:
+
+3. **Binary Search**:
+   - Initialize the left and right bounds for $k$.
+   - While the bounds are valid, compute the middle value $k$.
+   - Calculate the left-hand side of the equation using the formula derived earlier.
+   - Adjust the search bounds based on whether the left-hand side is equal to, less than, or greater than $n$.
+
+### Complexity Analysis
+
+- **Time Complexity**: 
+  - The outer loop runs $O(\log_2(n))$ times for $m$.
+  - The inner binary search runs $O(\log_2(n))$ times to find $k$.
+  - Overall, the complexity becomes $O(\log^2(n))$.
+
+- **Space Complexity**: 
+  - The space complexity remains $O(1)$ since we’re only using a constant amount of space for variables.
+
+### Conclusion
+
+Using binary search allows you to efficiently find the smallest base $k$ for each fixed $m$. While this method has a slightly higher complexity compared to the linear search implementation, it can provide better performance in specific cases or with optimizations.
+
+## Using Linear Search (better than binary search, read to know more)
+
 Let's break down the solution to the "Smallest Good Base" problem step by step, focusing on the mathematical derivations and logic.
 
 ### Problem Overview

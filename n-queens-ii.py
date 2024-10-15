@@ -7,27 +7,13 @@ class Solution:
 
         positioned_queens = set()
 
-        # similar to is_safe in nQueens
-        def is_not_under_attack(r, c):
-            # positive diagonal / hill has constant values
-            # of `r + c` for any r and c on that diagonal
-            # similar goes for negative diagonal / dale
-            # that has constant values of `r - c` for
-            # any r and c on that diagonal
-            return not (positioned_queens & set([f'col_{c}', f'd1_{r + c}', f'd2_{r - c}']))
-
-        def place_queen(r, c):
-            positioned_queens.update(set([f'col_{c}', f'd1_{r + c}', f'd2_{r - c}']))
-
-        def remove_queen(r, c):
-            positioned_queens.difference_update(set([f'col_{c}', f'd1_{r + c}', f'd2_{r - c}']))
-
         def backtrack_nqueen(row=0, count=0):
             for col in range(n):
+                current_position = set([f'col_{col}', f'd1_{row + col}', f'd2_{row - col}'])
                 # iterate through columns at the curent row.
-                if is_not_under_attack(row, col):
+                if not positioned_queens & current_position:
                     # explore this partial candidate solution, and mark the attacking zone
-                    place_queen(row, col)
+                    positioned_queens.update(current_position)
                     if row + 1 == n:
                         # we reach the bottom, i.e. we find a solution!
                         count += 1
@@ -35,7 +21,7 @@ class Solution:
                         # we move on to the next row
                         count = backtrack_nqueen(row + 1, count)
                     # backtrack, i.e. remove the queen and remove the attacking zone.
-                    remove_queen(row, col)
+                    positioned_queens.difference_update(current_position)
             return count
 
         return backtrack_nqueen(0, 0)

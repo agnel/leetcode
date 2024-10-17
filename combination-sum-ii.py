@@ -18,8 +18,12 @@ class Solution:
             for i in range(start, length):
                 if i > start and candidates[i] == candidates[i - 1]:
                     continue
-                else:
-                    backtrack(i + 1, combination + [candidates[i]], target - candidates[i])
+                # This condition will prune the tree faster.
+                # It brought down the runtime from 63ms to 34 ms
+                # when the solution was submitted with it.
+                if candidates[i] > target:
+                    break
+                backtrack(i + 1, combination + [candidates[i]], target - candidates[i])
         
         backtrack(0, [], target)
         return result
